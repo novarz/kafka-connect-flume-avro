@@ -17,6 +17,7 @@ package com.github.jcustenborder.kafka.connect.flume;
 
 import com.github.jcustenborder.kafka.connect.utils.VersionUtil;
 import com.github.jcustenborder.kafka.connect.utils.config.Description;
+import com.github.jcustenborder.kafka.connect.utils.config.DocumentationImportant;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.source.SourceConnector;
@@ -25,8 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-@Description("Connector is used to emulate a Flume [Avro Source](https://flume.apache.org/FlumeUserGuide.html#avro-source) to " +
+@Description("Connector is used to emulate a `Flume Avro Source <https://flume.apache.org/FlumeUserGuide.html#avro-source>`_ to " +
     "allow Flume Agents to forward events to a Kafka Connect pipeline.")
+@DocumentationImportant("This connector listens on a network port. Running more than one task or running in distributed " +
+    "mode can cause some undesired effects if another task already has the port open. It is recommended that you run this " +
+    "connector in :term:`Standalone Mode`.")
 public class FlumeAvroSourceConnector extends SourceConnector {
   @Override
   public String version() {

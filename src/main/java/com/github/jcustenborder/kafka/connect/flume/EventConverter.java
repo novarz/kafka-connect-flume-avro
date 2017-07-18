@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,8 +32,25 @@ class EventConverter {
   static final String FIELD_HEADERS = "headers";
   final FlumeAvroSourceConnectorConfig config;
 
-  final Schema keySchema;
-  final Schema valueSchema;
+
+  final static Schema KEY_SCHEMA = SchemaBuilder.struct()
+      .name("com.github.jcustenborder.kafka.connect.flume.AvroFlumeEventKey")
+      .field(FIELD_HEADERS, SchemaBuilder.map(Schema.STRING_SCHEMA, Schema.STRING_SCHEMA).optional().build())
+      .field(FIELD_SENDER, SchemaBuilder.string().optional().doc("The remote address for the sender of the message.").build())
+      .build();
+
+  final static Schema VALUE_SCHEMA = SchemaBuilder.struct()
+      .name("org.apache.flume.source.avro.AvroFlumeEvent")
+      .field(
+          FIELD_HEADERS,
+          SchemaBuilder.map(
+              Schema.STRING_SCHEMA,
+              Schema.STRING_SCHEMA
+          ).build()
+      )
+      .field(FIELD_BODY, Schema.BYTES_SCHEMA)
+      .build();
+
   final Map<String, Object> sourcePartition = ImmutableMap.of();
   final Map<String, Object> sourceOffset = ImmutableMap.of();
   Time time = new SystemTime();
@@ -41,46 +58,10 @@ class EventConverter {
 
   public EventConverter(FlumeAvroSourceConnectorConfig config) {
     this.config = config;
-    this.valueSchema = SchemaBuilder.struct()
-        .name("org.apache.flume.source.avro.AvroFlumeEvent")
-        .field(
-            FIELD_HEADERS,
-            SchemaBuilder.map(
-                Schema.STRING_SCHEMA,
-                Schema.STRING_SCHEMA
-            ).build()
-        )
-        .field(FIELD_BODY, Schema.BYTES_SCHEMA)
-        .build();
-
-    SchemaBuilder keySchemaBuilder = SchemaBuilder.struct()
-        .name("com.github.jcustenborder.kafka.connect.flume.AvroFlumeEventKey");
-
-    switch (this.config.keyType) {
-      case HEADERS:
-        keySchemaBuilder.field(
-            FIELD_HEADERS,
-            SchemaBuilder.map(
-                Schema.STRING_SCHEMA,
-                Schema.STRING_SCHEMA
-            ).build()
-        );
-        break;
-      case NONE:
-        break;
-      case SENDER:
-        keySchemaBuilder.field(FIELD_SENDER,
-            SchemaBuilder.string().doc("The remote address for the sender of the message.").build()
-        );
-        break;
-    }
-
-    this.keySchema = keySchemaBuilder.build();
-
   }
 
   SourceRecord record(AvroFlumeEvent event, String sender) {
-    final Struct value = new Struct(this.valueSchema)
+    final Struct value = new Struct(this.VALUE_SCHEMA)
         .put(FIELD_BODY, event.getBody())
         .put(FIELD_HEADERS, event.getHeaders());
 
@@ -91,7 +72,7 @@ class EventConverter {
       keySchema = null;
       key = null;
     } else {
-      keySchema = this.keySchema;
+      keySchema = this.KEY_SCHEMA;
       key = new Struct(keySchema);
 
       switch (this.config.keyType) {
@@ -111,7 +92,7 @@ class EventConverter {
         null,
         keySchema,
         key,
-        this.valueSchema,
+        this.VALUE_SCHEMA,
         value,
         this.time.milliseconds()
     );
