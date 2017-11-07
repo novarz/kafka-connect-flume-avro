@@ -14,13 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-
-: ${SUSPEND:='n'}
-
 set -e
 
 mvn clean package
-export KAFKA_JMX_OPTS="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=${SUSPEND},address=5005"
-export CLASSPATH="$(find target/kafka-connect-target/usr/share/java -type f -name '*.jar' | tr '\n' ':')"
+
+export KAFKA_DEBUG='y'
 connect-standalone config/connect-avro-docker.properties config/ConnectAvroSource.properties
