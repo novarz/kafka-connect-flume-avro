@@ -17,8 +17,10 @@
 @PluginOwner("jcustenborder")
 @Introduction("The plugin provides a way for users to send data from Apache Flume to Kafka bypassing " +
     "a Flume Receiver.")
+@Title("Flume Avro")
 package com.github.jcustenborder.kafka.connect.flume;
 
 import com.github.jcustenborder.kafka.connect.utils.config.Introduction;
 import com.github.jcustenborder.kafka.connect.utils.config.PluginName;
 import com.github.jcustenborder.kafka.connect.utils.config.PluginOwner;
+import com.github.jcustenborder.kafka.connect.utils.config.Title;
