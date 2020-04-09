@@ -80,7 +80,7 @@ Port to bind to.
 
 ##### `compression`
 
-The compression type. This must match on both flume agent and the connector.
+The compression type. This must match on both flume agent and the connector. `DEFLATE` - Compress messages with the deflate algorithm., `NONE` - No compression
 
 *Importance:* LOW
 
@@ -92,17 +92,13 @@ The compression type. This must match on both flume agent and the connector.
 
 
 
-##### `key.type`
+##### `ip.filter.rules`
 
-The type of key to include. NONE will set the key field as null. HEADERS will include the headers. SENDER will include the host that sent the message.
+ip.filter.rules
 
 *Importance:* LOW
 
-*Type:* STRING
-
-*Default Value:* NONE
-
-*Validator:* Matches: ``NONE``, ``HEADERS``, ``SENDER``
+*Type:* LIST
 
 
 
@@ -140,6 +136,8 @@ The password for the java keystore containing the certificate.
 
 *Type:* PASSWORD
 
+*Default Value:* [hidden]
+
 
 
 ##### `ssl.keystore.path`
@@ -149,6 +147,8 @@ The path to the keystore on the local file system.
 *Importance:* MEDIUM
 
 *Type:* STRING
+
+*Validator:* Empty String or Absolute path to a file that exists.
 
 
 
