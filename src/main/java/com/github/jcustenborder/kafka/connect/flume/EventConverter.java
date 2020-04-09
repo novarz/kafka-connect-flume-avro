@@ -20,36 +20,14 @@ import org.apache.flume.source.avro.AvroFlumeEvent;
 import org.apache.kafka.common.utils.SystemTime;
 import org.apache.kafka.common.utils.Time;
 import org.apache.kafka.connect.data.Schema;
-import org.apache.kafka.connect.data.SchemaBuilder;
-import org.apache.kafka.connect.data.Struct;
+import org.apache.kafka.connect.header.ConnectHeaders;
+import org.apache.kafka.connect.header.Headers;
 import org.apache.kafka.connect.source.SourceRecord;
 
 import java.util.Map;
 
 class EventConverter {
-  static final String FIELD_BODY = "body";
-  static final String FIELD_SENDER = "sender";
-  static final String FIELD_HEADERS = "headers";
   final FlumeAvroSourceConnectorConfig config;
-
-
-  final static Schema KEY_SCHEMA = SchemaBuilder.struct()
-      .name("com.github.jcustenborder.kafka.connect.flume.AvroFlumeEventKey")
-      .field(FIELD_HEADERS, SchemaBuilder.map(Schema.STRING_SCHEMA, Schema.STRING_SCHEMA).optional().build())
-      .field(FIELD_SENDER, SchemaBuilder.string().optional().doc("The remote address for the sender of the message.").build())
-      .build();
-
-  final static Schema VALUE_SCHEMA = SchemaBuilder.struct()
-      .name("org.apache.flume.source.avro.AvroFlumeEvent")
-      .field(
-          FIELD_HEADERS,
-          SchemaBuilder.map(
-              Schema.STRING_SCHEMA,
-              Schema.STRING_SCHEMA
-          ).build()
-      )
-      .field(FIELD_BODY, Schema.BYTES_SCHEMA)
-      .build();
 
   final Map<String, Object> sourcePartition = ImmutableMap.of();
   final Map<String, Object> sourceOffset = ImmutableMap.of();
@@ -61,40 +39,28 @@ class EventConverter {
   }
 
   SourceRecord record(AvroFlumeEvent event, String sender) {
-    final Struct value = new Struct(this.VALUE_SCHEMA)
-        .put(FIELD_BODY, event.getBody())
-        .put(FIELD_HEADERS, event.getHeaders());
 
-    final Schema keySchema;
-    final Struct key;
-
-    if (KeyType.NONE == this.config.keyType) {
-      keySchema = null;
-      key = null;
-    } else {
-      keySchema = this.KEY_SCHEMA;
-      key = new Struct(keySchema);
-
-      switch (this.config.keyType) {
-        case HEADERS:
-          key.put(FIELD_HEADERS, event.getHeaders());
-          break;
-        case SENDER:
-          key.put(FIELD_SENDER, sender);
-          break;
-      }
+    Headers headers = new ConnectHeaders();
+    if (null != event.getHeaders()) {
+      event.getHeaders().forEach((key, value) -> {
+        if (null != value) {
+          String headerName = String.format("flume.%s", key);
+          String v = value.toString();
+          headers.addString(headerName, v);
+        }
+      });
     }
-
     return new SourceRecord(
         sourcePartition,
         sourceOffset,
         this.config.topic,
         null,
-        keySchema,
-        key,
-        this.VALUE_SCHEMA,
-        value,
-        this.time.milliseconds()
+        null,
+        null,
+        Schema.BYTES_SCHEMA,
+        event.getBody(),
+        this.time.milliseconds(),
+        headers
     );
   }
 }

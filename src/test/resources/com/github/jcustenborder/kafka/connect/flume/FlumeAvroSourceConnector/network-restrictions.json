@@ -1,0 +1,29 @@
+{
+  "title" : "Network Restrictions",
+  "description" : "This example will listen for events from Flume on all ip addresses using the standard port. Any network traffic that is not from `localhost` or `127.0.*` will be dropped.",
+  "name" : "network-restrictions",
+  "config" : {
+    "topic" : "flume",
+    "ip.filter.rules" : "allow:ip:127.*,allow:name:localhost,deny:ip:*"
+  },
+  "transformations" : { },
+  "output" : {
+    "sourcePartition" : { },
+    "sourceOffset" : { },
+    "topic" : "flume",
+    "valueSchema" : {
+      "type" : "BYTES",
+      "isOptional" : false
+    },
+    "value" : "Tm8gb25lIHdpbGwgcmVhZCB0aGlzIG1lc3NhZ2Uu",
+    "timestamp" : 1586461064991,
+    "headers" : [ {
+      "name" : "flume.header",
+      "schema" : {
+        "type" : "STRING",
+        "isOptional" : false
+      },
+      "storage" : "adsfasdf"
+    } ]
+  }
+}

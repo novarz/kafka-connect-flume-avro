@@ -16,7 +16,8 @@
 package com.github.jcustenborder.kafka.connect.flume;
 
 import com.github.jcustenborder.kafka.connect.utils.VersionUtil;
-import com.github.jcustenborder.kafka.connect.utils.data.SourceRecordConcurrentLinkedDeque;
+import com.github.jcustenborder.kafka.connect.utils.data.SourceRecordDeque;
+import com.github.jcustenborder.kafka.connect.utils.data.SourceRecordDequeBuilder;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.avro.ipc.NettyServer;
 import org.apache.avro.ipc.Server;
@@ -26,9 +27,10 @@ import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -36,6 +38,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 public class FlumeAvroSourceTask extends SourceTask {
+  private static final Logger log = LoggerFactory.getLogger(FlumeAvroSourceTask.class);
+
   @Override
   public String version() {
     return VersionUtil.version(this.getClass());
@@ -50,13 +54,17 @@ public class FlumeAvroSourceTask extends SourceTask {
 
   FlumeAvroSourceConnectorConfig config;
   EventResponder eventResponder;
-  SourceRecordConcurrentLinkedDeque records;
+  SourceRecordDeque records;
+
   Server server;
 
   @Override
   public void start(Map<String, String> settings) {
     this.config = new FlumeAvroSourceConnectorConfig(settings);
-    this.records = new SourceRecordConcurrentLinkedDeque(4096, 100);
+    this.records = SourceRecordDequeBuilder.of()
+        .batchSize(4096)
+        .emptyWaitMs(100)
+        .build();
     this.eventResponder = new EventResponder(this.config, this.records);
 
     Executor bossExecutor = Executors.newCachedThreadPool(
@@ -87,15 +95,17 @@ public class FlumeAvroSourceTask extends SourceTask {
 
   @Override
   public List<SourceRecord> poll() throws InterruptedException {
-    List<SourceRecord> records = new ArrayList<>(4096);
-    while (!this.records.drain(records)) {
-
-    }
-    return records;
+    return this.records.getBatch();
   }
 
   @Override
   public void stop() {
+    log.info("stop() - closing server.");
     this.server.close();
+    try {
+      this.server.join();
+    } catch (InterruptedException e) {
+      log.error("Exception thrown during shutdown", e);
+    }
   }
 }

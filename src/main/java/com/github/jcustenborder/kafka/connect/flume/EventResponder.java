@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 package com.github.jcustenborder.kafka.connect.flume;
 
-import com.github.jcustenborder.kafka.connect.utils.data.SourceRecordConcurrentLinkedDeque;
+import com.github.jcustenborder.kafka.connect.utils.data.SourceRecordDeque;
 import org.apache.avro.AvroRemoteException;
 import org.apache.flume.source.avro.AvroFlumeEvent;
 import org.apache.flume.source.avro.AvroSourceProtocol;
@@ -31,9 +31,9 @@ class EventResponder implements AvroSourceProtocol {
 
   final FlumeAvroSourceConnectorConfig config;
   final EventConverter converter;
-  final SourceRecordConcurrentLinkedDeque records;
+  final SourceRecordDeque records;
 
-  public EventResponder(FlumeAvroSourceConnectorConfig config, SourceRecordConcurrentLinkedDeque records) {
+  public EventResponder(FlumeAvroSourceConnectorConfig config, SourceRecordDeque records) {
     this.config = config;
     this.records = records;
     this.converter = new EventConverter(this.config);

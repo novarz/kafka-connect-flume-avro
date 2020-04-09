@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,11 @@
  */
 package com.github.jcustenborder.kafka.connect.flume;
 
+import com.github.jcustenborder.kafka.connect.utils.config.Description;
+
 enum CompressionType {
+  @Description("Compress messages with the deflate algorithm.")
   DEFLATE,
+  @Description("No compression")
   NONE
 }
