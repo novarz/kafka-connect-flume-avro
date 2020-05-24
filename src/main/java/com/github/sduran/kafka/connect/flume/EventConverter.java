@@ -1,5 +1,5 @@
 /**
- * Copyright © 2017 Jeremy Custenborder (jcustenborder@gmail.com)
+ * Copyright © 2017 Sergio Duran (sduran@confluent.io)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jcustenborder.kafka.connect.flume;
+package com.github.sduran.kafka.connect.flume;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.flume.source.avro.AvroFlumeEvent;

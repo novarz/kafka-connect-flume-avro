@@ -21,7 +21,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.github.jcustenborder.kafka.connect</groupId>
+        <groupId>com.github.sergio.kafka.connect</groupId>
         <artifactId>kafka-connect-parent</artifactId>
         <version>2.4.0</version>
     </parent>
@@ -40,22 +40,22 @@
     </licenses>
     <developers>
         <developer>
-            <name>Jeremy Custenborder</name>
-            <email>jeremy@confluent.io</email>
-            <url>https://github.com/jcustenborder</url>
+            <name>SergioDuranVegas</name>
+            <email>sduran@confluent.io</email>
+            <url>https://github.com/novarz</url>
             <roles>
                 <role>maintainer</role>
             </roles>
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:https://github.com/jcustenborder/kafka-connect-flume-avro.git</connection>
-        <developerConnection>scm:git:git@github.com:jcustenborder/kafka-connect-flume-avro.git</developerConnection>
-        <url>https://github.com/jcustenborder/kafka-connect-flume-avro</url>
+        <connection>scm:git:https://github.com/novarz/kafka-connect-flume-avro.git</connection>
+        <developerConnection>scm:git:git@github.com:novarz/kafka-connect-flume-avro.git</developerConnection>
+        <url>https://github.com/novarz/kafka-connect-flume-avro</url>
     </scm>
     <issueManagement>
         <system>github</system>
-        <url>https://github.com/jcustenborder/kafka-connect-flume-avro/issues</url>
+        <url>https://github.com/novarz/kafka-connect-flume-avro/issues</url>
     </issueManagement>
     <properties>
     </properties>
@@ -72,7 +72,6 @@
                 <groupId>io.confluent</groupId>
                 <artifactId>kafka-connect-maven-plugin</artifactId>
                 <configuration>
-                    <documentationUrl>https://jcustenborder.github.io/kafka-connect-documentation/</documentationUrl>
                     <componentTypes>
                         <componentType>source</componentType>
                     </componentTypes>
