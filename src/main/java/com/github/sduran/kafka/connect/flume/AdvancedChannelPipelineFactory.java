@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 class AdvancedChannelPipelineFactory implements ChannelPipelineFactory {
   private static final Logger log = LoggerFactory.getLogger(AdvancedChannelPipelineFactory.class);
   final FlumeAvroSourceConnectorConfig config;

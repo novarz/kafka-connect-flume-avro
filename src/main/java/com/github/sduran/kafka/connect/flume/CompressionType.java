@@ -15,7 +15,7 @@
  */
 package com.github.sduran.kafka.connect.flume;
 
-import com.github.sduran.kafka.connect.utils.config.Description;
+import com.github.jcustenborder.kafka.connect.utils.config.Description;
 
 enum CompressionType {
   @Description("Compress messages with the deflate algorithm.")

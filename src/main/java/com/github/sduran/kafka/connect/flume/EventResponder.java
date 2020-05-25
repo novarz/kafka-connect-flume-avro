@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aduran.kafka.connect.flume;
+package com.github.sduran.kafka.connect.flume;
 
-import com.github.sduran.kafka.connect.utils.data.SourceRecordDeque;
+import com.github.jcustenborder.kafka.connect.utils.data.SourceRecordDeque;
 import org.apache.avro.AvroRemoteException;
 import org.apache.flume.source.avro.AvroFlumeEvent;
 import org.apache.flume.source.avro.AvroSourceProtocol;
@@ -45,6 +45,7 @@ class EventResponder implements AvroSourceProtocol {
     try {
       SourceRecord record = this.converter.record(event, null);
       this.records.add(record);
+      log.info("Record Added");
       result = Status.OK;
     } catch (Exception ex) {
       log.error("Exception thrown", ex);
@@ -61,7 +62,9 @@ class EventResponder implements AvroSourceProtocol {
       for (AvroFlumeEvent event : events) {
         append(event);
       }
+      log.info("Record Added");
       result = Status.OK;
+
     } catch (Exception ex) {
       log.error("Exception thrown", ex);
       result = Status.FAILED;

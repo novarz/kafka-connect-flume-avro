@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jcustenborder.kafka.connect.flume;
+package com.github.sduran.kafka.connect.flume;
 
+import com.github.jcustenborder.kafka.connect.utils.config.ConfigUtils;
 import com.github.jcustenborder.kafka.connect.utils.config.ConfigKeyBuilder;
 import com.github.jcustenborder.kafka.connect.utils.config.ConfigUtils;
 import com.github.jcustenborder.kafka.connect.utils.config.recommenders.Recommenders;
@@ -48,6 +49,7 @@ class FlumeAvroSourceConnectorConfig extends AbstractConfig {
   public final int workerThreads;
   public final String keystoreType;
   public final List<IpFilterRule> ipFilterRules;
+
 
 
   public FlumeAvroSourceConnectorConfig(Map<String, String> settings) {
@@ -282,6 +284,8 @@ class FlumeAvroSourceConnectorConfig extends AbstractConfig {
                 .defaultValue("")
                 .orderInGroup(3)
                 .build()
-        );
+        )
+
+            ;
   }
 }

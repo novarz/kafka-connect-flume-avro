@@ -1,4 +1,4 @@
-package com.github.jcustenborder.kafka.connect.flume;
+package com.github.sduran.kafka.connect.flume;
 
 import org.apache.kafka.common.config.ConfigException;
 import org.jboss.netty.handler.ipfilter.IpFilterRule;
