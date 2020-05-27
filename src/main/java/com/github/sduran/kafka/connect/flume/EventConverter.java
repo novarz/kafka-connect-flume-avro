@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,18 +88,28 @@ class EventConverter {
 
 
 
-    final Struct value = new Struct(this.VALUE_SCHEMA)
-              .put(FIELD_BODY, event.getBody())
-              .put(FIELD_HEADERS, event.getHeaders());
-
       final Schema keySchema;
       final Struct key;
+    HashMap<String,String> eventkey = new HashMap<>();
+
+    if (null != event.getHeaders()) {
+      event.getHeaders().forEach((clave, valor) -> {
+        if (null != valor) {
+          String headerName = clave.toString() ;
+          String v = valor.toString();
+          eventkey.put(headerName,v);
+        }
+      });
+    }
+
+    final Struct value = new Struct(this.VALUE_SCHEMA)
+            .put(FIELD_BODY, event.getBody())
+            .put(FIELD_HEADERS, eventkey);
+
     log.info("adding key schema");
 
           keySchema = this.KEY_SCHEMA;
-          key = new Struct(keySchema);
-          key.put(FIELD_HEADERS, event.getHeaders());
-
+          key = new Struct(this.KEY_SCHEMA).put(FIELD_HEADERS,eventkey);
 
       return new SourceRecord(
               sourcePartition,
