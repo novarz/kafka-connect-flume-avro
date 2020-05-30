@@ -49,13 +49,12 @@ class EventConverter {
 
 
     final static Schema KEY_SCHEMA = SchemaBuilder.struct()
-            .name("com.github.jcustenborder.kafka.connect.flume.AvroFlumeEventKey")
-            .field(FIELD_HEADERS, SchemaBuilder.map(Schema.STRING_SCHEMA, Schema.STRING_SCHEMA).optional().build())
-            .field(FIELD_SENDER, SchemaBuilder.string().optional().doc("The remote address for the sender of the message.").build())
+            .name("org.santander.flume.source.avro.AvroFlumeEventKey")
+            .field(FIELD_SENDER, SchemaBuilder.string().doc("The remote address for the sender of the message.").build())
             .build();
 
     final static Schema VALUE_SCHEMA = SchemaBuilder.struct()
-            .name("org.apache.flume.source.avro.AvroFlumeEvent")
+            .name("org.santander.flume.source.avro.AvroFlumeEvent")
             .field(
                     FIELD_HEADERS,
                     SchemaBuilder.map(
@@ -63,7 +62,6 @@ class EventConverter {
                             Schema.STRING_SCHEMA
                     ).build()
             )
-            .field(FIELD_BODY, Schema.BYTES_SCHEMA)
             .build();
 
 
@@ -75,15 +73,13 @@ class EventConverter {
   SourceRecord record(AvroFlumeEvent event, String sender) {
     log.info("adding headers");
     Headers headers = new ConnectHeaders();
-    if (null != event.getHeaders()) {
-      event.getHeaders().forEach((key, value) -> {
-        if (null != value) {
-          String headerName = String.format("flume.%s", key);
-          String v = value.toString();
-          headers.addString(headerName, v);
-        }
-      });
-    }
+    byte[] bytes = new byte[event.getBody().remaining()];
+    event.getBody().get(bytes, 0, bytes.length);
+    headers.addBytes("logevent",bytes);
+
+
+
+
     log.info("adding value fields");
 
 
@@ -103,13 +99,12 @@ class EventConverter {
     }
 
     final Struct value = new Struct(this.VALUE_SCHEMA)
-            .put(FIELD_BODY, event.getBody())
             .put(FIELD_HEADERS, eventkey);
 
     log.info("adding key schema");
 
           keySchema = this.KEY_SCHEMA;
-          key = new Struct(this.KEY_SCHEMA).put(FIELD_HEADERS,eventkey);
+          key = new Struct(this.KEY_SCHEMA).put(FIELD_SENDER,eventkey);
 
       return new SourceRecord(
               sourcePartition,
