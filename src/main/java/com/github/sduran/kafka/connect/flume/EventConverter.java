@@ -104,7 +104,7 @@ class EventConverter {
     log.info("adding key schema");
 
           keySchema = this.KEY_SCHEMA;
-          key = new Struct(this.KEY_SCHEMA).put(FIELD_SENDER,eventkey);
+          key = new Struct(this.KEY_SCHEMA).put(FIELD_SENDER,eventkey.get("host"));
 
       return new SourceRecord(
               sourcePartition,
