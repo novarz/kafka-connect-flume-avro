@@ -24,7 +24,7 @@
     <groupId>com.github.sergio.kafka.connect</groupId>
 
     <artifactId>kafka-connect-flume-avro</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
     <name>kafka-connect-flume-avro</name>
     <url>https://github.com/novarz/kafka-connect-flume-avro</url>
     <inceptionYear>2017</inceptionYear>

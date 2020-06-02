@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,7 @@ class EventConverter {
           eventkey.put(headerName,v);
         }
       });
+      eventkey.put("content",new String(bytes, StandardCharsets.UTF_8));
     }
 
     final Struct value = new Struct(this.VALUE_SCHEMA)
