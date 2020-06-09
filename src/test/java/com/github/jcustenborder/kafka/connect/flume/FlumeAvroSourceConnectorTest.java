@@ -13,13 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.sduran.kafka.connect.flume;
+package com.github.jcustenborder.kafka.connect.flume;
 
-import com.github.jcustenborder.kafka.connect.utils.config.Description;
-
-enum CompressionType {
-  @Description("Compress messages with the deflate algorithm.")
-  DEFLATE,
-  @Description("No compression")
-  NONE
+public class FlumeAvroSourceConnectorTest {
 }

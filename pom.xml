@@ -21,10 +21,10 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.sergio.kafka.connect</groupId>
+    <groupId>com.github.jcustenborder.kafka.connect</groupId>
 
     <artifactId>kafka-connect-flume-avro</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.2.9</version>
     <name>kafka-connect-flume-avro</name>
     <url>https://github.com/novarz/kafka-connect-flume-avro</url>
     <inceptionYear>2017</inceptionYear>
@@ -56,8 +56,8 @@
         <url>https://github.com/novarz/kafka-connect-flume-avro/issues</url>
     </issueManagement>
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -100,8 +100,8 @@
                 <configuration>
                     <componentTypes>
                         <componentType>source</componentType>
-                        <source>11</source>
-                        <target>11</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </componentTypes>
                     <tags>
                         <tag>Flume</tag>

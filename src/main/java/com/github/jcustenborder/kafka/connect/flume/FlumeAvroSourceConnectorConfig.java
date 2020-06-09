@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.sduran.kafka.connect.flume;
+package com.github.jcustenborder.kafka.connect.flume;
 
 import com.github.jcustenborder.kafka.connect.utils.config.ConfigUtils;
 import com.github.jcustenborder.kafka.connect.utils.config.ConfigKeyBuilder;
-import com.github.jcustenborder.kafka.connect.utils.config.ConfigUtils;
 import com.github.jcustenborder.kafka.connect.utils.config.recommenders.Recommenders;
 import com.github.jcustenborder.kafka.connect.utils.config.validators.Validators;
 import com.github.jcustenborder.kafka.connect.utils.config.validators.filesystem.ValidFile;

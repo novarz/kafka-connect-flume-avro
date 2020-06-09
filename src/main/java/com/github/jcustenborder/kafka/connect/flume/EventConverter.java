@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.sduran.kafka.connect.flume;
+package com.github.jcustenborder.kafka.connect.flume;
 
-import com.github.sduran.kafka.connect.flume.FlumeAvroSourceConnectorConfig;
 import com.google.common.collect.ImmutableMap;
 import org.apache.flume.source.avro.AvroFlumeEvent;
 import org.apache.kafka.common.utils.SystemTime;
@@ -33,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 class EventConverter {
@@ -72,7 +70,7 @@ class EventConverter {
   }
 
   SourceRecord record(AvroFlumeEvent event, String sender) {
-    log.info("adding headers");
+    log.debug("adding headers");
     Headers headers = new ConnectHeaders();
     byte[] bytes = new byte[event.getBody().remaining()];
     event.getBody().get(bytes, 0, bytes.length);
@@ -81,7 +79,7 @@ class EventConverter {
 
 
 
-    log.info("adding value fields");
+    log.debug("adding value fields");
 
 
 
@@ -97,16 +95,16 @@ class EventConverter {
           eventkey.put(headerName,v);
         }
       });
-      eventkey.put("content",new String(bytes, StandardCharsets.UTF_8));
+     // eventkey.put("content",new String(bytes, StandardCharsets.UTF_8));
     }
 
     final Struct value = new Struct(this.VALUE_SCHEMA)
             .put(FIELD_HEADERS, eventkey);
 
-    log.info("adding key schema");
+    log.debug("adding key schema");
 
           keySchema = this.KEY_SCHEMA;
-          key = new Struct(this.KEY_SCHEMA).put(FIELD_SENDER,eventkey.get("host"));
+          key = new Struct(this.KEY_SCHEMA).put(FIELD_SENDER,eventkey.getOrDefault ("host","nulo"));
 
       return new SourceRecord(
               sourcePartition,
