@@ -45,7 +45,7 @@ class EventResponder implements AvroSourceProtocol {
     try {
       SourceRecord record = this.converter.record(event, null);
       this.records.add(record);
-      log.info("Record Added");
+      log.debug("Record Added");
       result = Status.OK;
     } catch (Exception ex) {
       log.error("Exception thrown", ex);
@@ -62,7 +62,7 @@ class EventResponder implements AvroSourceProtocol {
       for (AvroFlumeEvent event : events) {
         append(event);
       }
-      log.info("Record Added");
+      log.debug("Record Added");
       result = Status.OK;
 
     } catch (Exception ex) {
