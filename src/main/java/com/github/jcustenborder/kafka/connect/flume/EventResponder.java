@@ -36,8 +36,11 @@ class EventResponder implements AvroSourceProtocol {
   public EventResponder(FlumeAvroSourceConnectorConfig config, SourceRecordDeque records) {
     this.config = config;
     this.records = records;
-    this.converter = new EventConverter(this.config);
+    this.converter = config.getString("eventType").equals("Json") ? new EventJsonConverter(this.config)
+    :  new EventBytesConverter(this.config);
   }
+
+
 
   @Override
   public Status append(AvroFlumeEvent event) throws AvroRemoteException {

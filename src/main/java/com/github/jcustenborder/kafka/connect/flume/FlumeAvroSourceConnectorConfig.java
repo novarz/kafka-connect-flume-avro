@@ -177,6 +177,12 @@ class FlumeAvroSourceConnectorConfig extends AbstractConfig {
 
   public static final String SSL_GROUP = "SSL";
 
+  public static final String EVENT_GROUP = "EVENT";
+
+  public static  final String EVENT_TYPE_CONF = "eventType";
+  static final String EVENT_TYPE_DOC = "Flag to determine if we should descape the json string -> Values are JSon or Bytes";
+  static final String EVENT_TYPE_DEFAULT = "Bytes";
+
   public static final String SSL_ENABLED_CONF = "ssl.enabled";
   static final String SSL_ENABLED_DOC = "Flag to determine if ssl should be configured for the connection.";
   static final boolean SSL_ENABLED_DEFAULT = false;
@@ -283,8 +289,15 @@ class FlumeAvroSourceConnectorConfig extends AbstractConfig {
                 .defaultValue("")
                 .orderInGroup(3)
                 .build()
-        )
-
+        ) //
+            .define( ConfigKeyBuilder.of(EVENT_GROUP, EVENT_TYPE_CONF, Type.STRING)
+                    .importance(ConfigDef.Importance.MEDIUM)
+                    .documentation(EVENT_TYPE_DOC)
+                    .defaultValue(EVENT_TYPE_DEFAULT)
+                    .validator(ConfigDef.ValidString.in("Json", "Bytes"))
+                    .orderInGroup(1)
+                    .build()
+            )
             ;
   }
 }

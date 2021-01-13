@@ -24,7 +24,7 @@
     <groupId>com.github.jcustenborder.kafka.connect</groupId>
 
     <artifactId>kafka-connect-flume-avro</artifactId>
-    <version>0.3.3</version>
+    <version>0.3.4</version>
     <name>kafka-connect-flume-avro</name>
     <url>https://github.com/novarz/kafka-connect-flume-avro</url>
     <inceptionYear>2017</inceptionYear>
@@ -56,8 +56,8 @@
         <url>https://github.com/novarz/kafka-connect-flume-avro/issues</url>
     </issueManagement>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -66,7 +66,7 @@
             <version> 0.4.162 </version></dependency><dependency>
         <groupId>org.apache.kafka</groupId>
         <artifactId>connect-api</artifactId>
-        <version>2.4.1</version>
+        <version>2.5.1</version>
         <scope>provided</scope></dependency>
         <dependency>
         <groupId>org.apache.flume</groupId>
@@ -89,6 +89,11 @@
             <version>2.10.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.9</version>
+        </dependency>
 
     </dependencies>
     <build>
@@ -100,8 +105,8 @@
                 <configuration>
                     <componentTypes>
                         <componentType>source</componentType>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>11</source>
+                        <target>11</target>
                     </componentTypes>
                     <tags>
                         <tag>Flume</tag>
