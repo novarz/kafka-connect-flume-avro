@@ -63,7 +63,7 @@ class EventJsonConverter implements EventConverter {
 
   public EventJsonConverter(FlumeAvroSourceConnectorConfig config) {
     this.config = config;
-    log.info("initialize json converter");
+    log.debug("initialize json converter");
   }
 
   public SourceRecord record(AvroFlumeEvent event, String sender) {
@@ -77,13 +77,11 @@ class EventJsonConverter implements EventConverter {
     event.getBody().get(bytes, 0, bytes.length);
     String s = new String(bytes);
     s = org.apache.commons.text.StringEscapeUtils.unescapeJson(s);
-    log.info(s);
+    log.trace(s);
     headers.addBytes("logevent",s.getBytes());
-    log.debug("evento unescaped  " +s);
 
 
-
-    log.info("adding json value fields");
+    log.debug("adding json value fields");
 
 
     if (null != event.getHeaders()) {
@@ -100,7 +98,7 @@ class EventJsonConverter implements EventConverter {
     final Struct value = new Struct(this.VALUE_SCHEMA)
             .put(FIELD_HEADERS, eventkey);
 
-    log.info("adding key schema");
+    log.debug("adding key schema");
 
           keySchema = this.KEY_SCHEMA;
           key = new Struct(this.KEY_SCHEMA).put(FIELD_SENDER,eventkey.getOrDefault ("host","nulo"));
